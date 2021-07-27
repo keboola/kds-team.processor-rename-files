@@ -39,10 +39,9 @@ class Component(ComponentBase):
         if len(in_files) > 0 and renamed_files_count == 0:
             logging.warning("No files were renamed. No files matched the pattern.")
 
-        logging.info(f'Finished. ')
+        logging.info('Finished. ')
 
     def rename_and_move(self, in_file: FileDefinition):
-        params = self.configuration.parameters
 
         file_name, has_changed = self.get_new_name(in_file.full_name)
         if has_changed:
