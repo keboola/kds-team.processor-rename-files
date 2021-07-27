@@ -1,7 +1,8 @@
 # processor-create-manifest
 
 
-Takes all files in `/data/in/files` and renames the files matching the regex pattern and moves the result to `/data/out/files`. 
+Takes all files in `/data/in/files` (or `/data/in/tables`)  and renames the files matching the regex pattern 
+and moves the result to `/data/out/files` (or `/data/out/tables`). 
 
 - All files that does not contain any match with the pattern's regular expression are left with actual name. 
 - The manifest files are respected and updated accordingly.
@@ -24,6 +25,10 @@ Takes all files in `/data/in/files` and renames the files matching the regex pat
  - `pattern` --  The regular expression to match. May contain capturing groups that may be used in the replacement
  - `replacement` -- String to replace the matched file names. May contain references to capture groups if present e.g. `$0` (0-based). 
  Note that the pattern needs to be JSON-escaped. e.g. `.+\.csv` => `"pattern": ".+\\.csv"` 
+ - `mode` -- OPTIONAL defines the file folder that will be renamed. 
+    - `files` - will process everything in `in/files`. 
+    - `tables` - will process everything in `in/tables`. 
+    - `both` - DEFAULT will process everything in `in/tables` and `in/files`. 
  - `ignore_manifest` -- OPTIONAL (default `false`) Do not transfer manifest file if present. 
 
  

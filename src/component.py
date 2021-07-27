@@ -2,15 +2,16 @@ import logging
 import re
 import shutil
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple, List, Union
 
 from keboola.component.base import ComponentBase, UserException
 # configuration variables
-from keboola.component.dao import FileDefinition
+from keboola.component.dao import FileDefinition, TableDefinition
 
 KEY_REPLACEMENT = "replacement"
 
 KEY_PATTERN = 'pattern'
+KEY_MODE = 'mode'
 
 # list of mandatory parameters => if some is missing,
 # component will fail with readable message on initialization.
@@ -29,7 +30,21 @@ class Component(ComponentBase):
         Main execution code
         '''
 
-        in_files = self.get_input_files_definitions(only_latest_files=False)
+        mode = self.configuration.parameters.get(KEY_MODE, 'both')
+        in_files: List[Union[TableDefinition, FileDefinition]] = []
+        if mode == 'files':
+            in_files = self.get_input_files_definitions(only_latest_files=False)
+        elif mode == 'tables':
+            in_files = self.get_input_tables_definitions()
+        elif mode == 'both':
+            in_files.extend(self.get_input_tables_definitions())
+            in_files.extend(self.get_input_files_definitions(only_latest_files=False))
+
+        else:
+            raise UserException(f'Invalid mode {mode}. Only "files" or "tables" or "all" modes are supported!')
+
+        logging.info(f"Processing files in mode: {mode}")
+
         logging.info(f"{len(in_files)} input files found. Looking for matches and renaming.")
         renamed_files_count = 0
         for file in in_files:
@@ -39,25 +54,29 @@ class Component(ComponentBase):
         if len(in_files) > 0 and renamed_files_count == 0:
             logging.warning("No files were renamed. No files matched the pattern.")
 
-        logging.info(f'Finished. ')
+        logging.info('Finished. ')
 
-    def rename_and_move(self, in_file: FileDefinition):
-        params = self.configuration.parameters
+    def rename_and_move(self, in_file: Union[FileDefinition, TableDefinition]):
 
-        file_name, has_changed = self.get_new_name(in_file.full_name)
+        file_name, has_changed = self.get_new_name(Path(in_file.full_path).name)
         if has_changed:
             logging.info(f'File "{in_file.full_path}" renamed to "{file_name}"')
 
-        new_out_file = self.create_out_file_definition(file_name)
+        if isinstance(in_file, FileDefinition):
+            new_out_file = self.create_out_file_definition(file_name)
+        elif isinstance(in_file, TableDefinition):
+            new_out_file = self.create_out_table_definition(file_name)
+        else:
+            raise ValueError('Invalid file definition object!')
 
         self.move_file_to_out(in_file.full_path, new_out_file)
         return has_changed
 
-    def move_file_to_out(self, source_path, file: FileDefinition):
+    def move_file_to_out(self, source_path, file: Union[FileDefinition, TableDefinition]):
         # move in_file to out
         shutil.copy(source_path, file.full_path)
         if Path(f'{source_path}.manifest').exists() and not self.configuration.parameters.get('skip_manifest', False):
-            self.write_filedef_manifest(file)
+            shutil.copy(f'{source_path}.manifest', f'{file.full_path}.manifest')
 
     def get_new_name(self, file_name: str) -> Tuple[str, bool]:
         params = self.configuration.parameters
