@@ -1,4 +1,4 @@
-# processor-create-manifest
+# Rename Files Processor
 
 
 Takes all files in `/data/in/files` (or `/data/in/tables`)  and renames the files matching the regex pattern 
