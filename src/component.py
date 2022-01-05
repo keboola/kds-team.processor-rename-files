@@ -115,7 +115,7 @@ class Component(ComponentBase):
             for group in mask_match_groups:
                 mask_string = mask_string.replace(group, first_match[int(group.replace('$', ''))])
         else:
-            mask_string.replace('$1', first_match)
+            mask_string = mask_string.replace('$0', first_match)
 
         return mask_string
 
