@@ -74,6 +74,7 @@ class Component(ComponentBase):
 
     def move_file_to_out(self, source_path, file: Union[FileDefinition, TableDefinition]):
         # move in_file to out
+        Path(file.full_path).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(source_path, file.full_path)
         if Path(f'{source_path}.manifest').exists() and not self.configuration.parameters.get('skip_manifest', False):
             shutil.copy(f'{source_path}.manifest', f'{file.full_path}.manifest')
