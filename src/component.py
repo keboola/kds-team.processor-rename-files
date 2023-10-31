@@ -1,17 +1,18 @@
 import logging
+import os
 import re
 import shutil
 from pathlib import Path
 from typing import Tuple, List, Union
 
 from keboola.component.base import ComponentBase, UserException
-# configuration variables
 from keboola.component.dao import FileDefinition, TableDefinition
 
 KEY_REPLACEMENT = "replacement"
 
 KEY_PATTERN = 'pattern'
 KEY_MODE = 'mode'
+KEY_FUNC_TO_UPPERCASE = 'to_uppercase'
 
 # list of mandatory parameters => if some is missing,
 # component will fail with readable message on initialization.
@@ -99,6 +100,11 @@ class Component(ComponentBase):
         if not new_file_name:
             has_changed = False
             new_file_name = file_name
+
+        to_uppercase = params.get("to_uppercase", False)
+        if to_uppercase:
+            name, ext = os.path.splitext(new_file_name)
+            new_file_name = name.upper() + ext
 
         return new_file_name, has_changed
 

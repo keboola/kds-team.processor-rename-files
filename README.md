@@ -114,7 +114,24 @@ Example processor configuration:
 }
 ```
 
+## Additional functions
 
+**TO UPPERCASE**
 
-## Development
+Using a parameter `to_uppercase`, you can convert the filename of your file to uppercase.
+Example configuration:
 
+```json
+{
+    "definition": {
+        "component": "kds-team.processor-rename-files"
+    },
+    "parameters": {
+        "pattern": "(.+)(\\..+)",
+        "replacement": "$0$1",
+        "to_uppercase": true
+    }
+}
+```
+
+This converts the filename from anything-lowercase.any_extension into ANYTHING-LOWERCASE.any_extension
