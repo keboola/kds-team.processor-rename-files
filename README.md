@@ -24,6 +24,7 @@ and moves the result to `/data/out/files` (or `/data/out/tables`).
 
  - `pattern` --  The regular expression to match. May contain capturing groups that may be used in the replacement
  - `replacement` -- String to replace the matched file names. May contain references to capture groups if present e.g. `$0` (0-based). 
+ - `to_uppercase` -- OPTIONAL true/false IF true, the filename of all files that match the pattern are converted to uppercase. (excluding the extension)
  Note that the pattern needs to be JSON-escaped. e.g. `.+\.csv` => `"pattern": ".+\\.csv"` 
  - `mode` -- OPTIONAL defines the file folder that will be renamed. 
     - `files` - will process everything in `in/files`. 
@@ -118,7 +119,7 @@ Example processor configuration:
 
 **TO UPPERCASE**
 
-Using a parameter `to_uppercase`, you can convert the filename of your file to uppercase.
+Using a parameter `to_uppercase`, you can convert the filename of all files that match the pattern to uppercase.
 Example configuration:
 
 ```json
@@ -134,4 +135,4 @@ Example configuration:
 }
 ```
 
-This converts the filename from anything-lowercase.any_extension into ANYTHING-LOWERCASE.any_extension
+This converts the filename from `anything\lowercase.any_extension` into `ANYTHING\LOWERCASE.any_extension`
