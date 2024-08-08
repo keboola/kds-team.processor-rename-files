@@ -1,4 +1,4 @@
-keboola.component==1.6.3
+keboola.component==1.6.7
 keboola.utils
 mock
 freezegun
