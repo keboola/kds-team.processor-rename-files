@@ -5,8 +5,9 @@ import shutil
 from pathlib import Path
 from typing import Tuple, List, Union
 
-from keboola.component.base import ComponentBase, UserException
+from keboola.component import ComponentBase
 from keboola.component.dao import FileDefinition, TableDefinition
+from keboola.component import UserException
 
 KEY_REPLACEMENT = "replacement"
 

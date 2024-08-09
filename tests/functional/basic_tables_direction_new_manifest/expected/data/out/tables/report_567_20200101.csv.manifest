@@ -1,0 +1,34 @@
+{
+  "schema": [
+    {
+      "name": "foo",
+      "data_type": {
+        "base": {
+          "type": "INTEGER"
+        }
+      },
+      "nullable": true
+    },
+    {
+      "name": "bar",
+      "data_type": {
+        "base": {
+          "type": "STRING"
+        },
+        "redshift": {
+          "type": "STRING",
+          "length": "255"
+        }
+      },
+      "nullable": true
+    },
+    {
+      "name": "note",
+      "data_type": {
+        "base": {
+          "type": "STRING"
+        }
+      }
+    }
+  ]
+}
