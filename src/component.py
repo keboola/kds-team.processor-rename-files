@@ -76,18 +76,15 @@ class Component(ComponentBase):
 
     def move_file_to_out(self, in_file: Union[FileDefinition, TableDefinition],
                          out_file: Union[FileDefinition, TableDefinition]):
-
-        out_path = Path(out_file.full_path)
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-
         logging.debug(f'Moving file "{in_file.full_path}" to "{out_file.full_path}"')
+
+        Path(out_file.full_path).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(in_file.full_path, out_file.full_path)
 
         manifest_path = Path(f'{in_file.full_path}.manifest')
         skip_manifest = self.configuration.parameters.get('skip_manifest')
 
         if manifest_path.exists() and not skip_manifest:
-
             if isinstance(in_file, TableDefinition):
                 # This is less destructive than recreating whole TableDefinition
                 in_file._name = out_file.name
