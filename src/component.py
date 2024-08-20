@@ -71,15 +71,41 @@ class Component(ComponentBase):
         else:
             raise ValueError('Invalid file definition object!')
 
-        self.move_file_to_out(in_file.full_path, new_out_file)
+        self.move_file_to_out(in_file, new_out_file)
         return has_changed
 
-    def move_file_to_out(self, source_path, file: Union[FileDefinition, TableDefinition]):
-        # move in_file to out
-        Path(file.full_path).parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(source_path, file.full_path)
-        if Path(f'{source_path}.manifest').exists() and not self.configuration.parameters.get('skip_manifest', False):
-            shutil.copy(f'{source_path}.manifest', f'{file.full_path}.manifest')
+    def move_file_to_out(self, in_file: Union[FileDefinition, TableDefinition],
+                         out_file: Union[FileDefinition, TableDefinition]):
+
+        out_path = Path(out_file.full_path)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+
+        shutil.copy(in_file.full_path, out_file.full_path)
+
+        manifest_path = Path(f'{in_file.full_path}.manifest')
+        skip_manifest = self.configuration.parameters.get('skip_manifest')
+
+        if manifest_path.exists() and not skip_manifest:
+            if isinstance(in_file, TableDefinition):
+                new_manifest = self.create_out_table_definition(
+                    name=out_file.name,
+                    is_sliced=getattr(in_file, 'is_sliced', None),
+                    destination=getattr(in_file, 'destination', None),
+                    primary_key=getattr(in_file, 'primary_key', None),
+                    schema=getattr(in_file, 'schema', None),
+                    incremental=getattr(in_file, 'incremental', None),
+                    table_metadata=getattr(in_file, 'table_metadata', None),
+                    enclosure=getattr(in_file, 'enclosure', None),
+                    delimiter=getattr(in_file, 'delimiter', None),
+                    write_always=getattr(in_file, 'write_always', None),
+                    has_header=getattr(in_file, 'has_header', None)
+                )
+                new_manifest.full_path = f'{out_file.full_path}'
+
+                # Write the new manifest file
+                self.write_manifest(new_manifest)
+            else:
+                shutil.copy(manifest_path, f'{out_file.full_path}.manifest')
 
     def get_new_name(self, file_name: str) -> Tuple[str, bool]:
         params = self.configuration.parameters
