@@ -87,23 +87,13 @@ class Component(ComponentBase):
         skip_manifest = self.configuration.parameters.get('skip_manifest')
 
         if manifest_path.exists() and not skip_manifest:
-            if isinstance(in_file, TableDefinition):
-                new_manifest = self.create_out_table_definition(
-                    name=out_file.name,
-                    is_sliced=getattr(in_file, 'is_sliced', None),
-                    destination=getattr(in_file, 'destination', None),
-                    primary_key=getattr(in_file, 'primary_key', None),
-                    schema=getattr(in_file, 'schema', None),
-                    incremental=getattr(in_file, 'incremental', None),
-                    table_metadata=getattr(in_file, 'table_metadata', None),
-                    enclosure=getattr(in_file, 'enclosure', None),
-                    delimiter=getattr(in_file, 'delimiter', None),
-                    write_always=getattr(in_file, 'write_always', None),
-                    has_header=getattr(in_file, 'has_header', None)
-                )
-                new_manifest.full_path = f'{out_file.full_path}'
 
-                self.write_manifest(new_manifest)
+            if isinstance(in_file, TableDefinition):
+                # This is less destructive than recreating whole TableDefinition
+                in_file._name = out_file.name
+                in_file.full_path = out_file.full_path
+                in_file.stage = "out"
+                self.write_manifest(in_file)
             else:
                 shutil.copy(manifest_path, f'{out_file.full_path}.manifest')
 
