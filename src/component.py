@@ -80,6 +80,7 @@ class Component(ComponentBase):
         out_path = Path(out_file.full_path)
         out_path.parent.mkdir(parents=True, exist_ok=True)
 
+        logging.debug(f'Moving file "{in_file.full_path}" to "{out_file.full_path}"')
         shutil.copy(in_file.full_path, out_file.full_path)
 
         manifest_path = Path(f'{in_file.full_path}.manifest')
@@ -102,7 +103,6 @@ class Component(ComponentBase):
                 )
                 new_manifest.full_path = f'{out_file.full_path}'
 
-                # Write the new manifest file
                 self.write_manifest(new_manifest)
             else:
                 shutil.copy(manifest_path, f'{out_file.full_path}.manifest')
