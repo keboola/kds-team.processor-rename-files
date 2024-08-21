@@ -1,0 +1,393 @@
+{
+    "id": "out.c-L3_XXX_Sales_Data.test_fhs_current_weekly_sales",
+    "uri": "https:\/\/connection.keboola.com\/v2\/storage\/tables\/out.c-L3_XXX_Sales_Data.test_fhs_current_weekly_sales",
+    "name": "test_fhs_current_weekly_sales",
+    "primary_key": [],
+    "distribution_key": [],
+    "created": "2023-02-09T16:35:30+0100",
+    "last_change_date": "2024-08-16T14:08:03+0200",
+    "last_import_date": "2024-08-16T14:08:03+0200",
+    "columns": [
+        "TimeStamp",
+        "RowCount",
+        "ROW_3",
+        "ROW_4",
+        "ROW_5",
+        "ROW_6",
+        "ROW_7",
+        "ROW_8",
+        "OBCol"
+    ],
+    "metadata": [
+        {
+            "id": "1711837000",
+            "key": "KBC.createdBy.component.id",
+            "value": "keboola.snowflake-transformation",
+            "provider": "system",
+            "timestamp": "2023-02-09T16:35:54+0100"
+        },
+        {
+            "id": "1711837001",
+            "key": "KBC.createdBy.configuration.id",
+            "value": "949071899",
+            "provider": "system",
+            "timestamp": "2023-02-09T16:35:54+0100"
+        },
+        {
+            "id": "1711837002",
+            "key": "KBC.lastUpdatedBy.component.id",
+            "value": "keboola.python-transformation-v2",
+            "provider": "system",
+            "timestamp": "2024-08-16T14:08:03+0200"
+        },
+        {
+            "id": "1711837003",
+            "key": "KBC.lastUpdatedBy.configuration.id",
+            "value": "954713370",
+            "provider": "system",
+            "timestamp": "2024-08-16T14:08:03+0200"
+        },
+        {
+            "id": "1711837004",
+            "key": "KBC.name",
+            "value": "fhs_current_weekly_sales",
+            "provider": "keboola.snowflake-transformation",
+            "timestamp": "2023-02-09T16:35:54+0100"
+        },
+        {
+            "id": "1711837005",
+            "key": "KBC.datatype.backend",
+            "value": "snowflake",
+            "provider": "keboola.snowflake-transformation",
+            "timestamp": "2023-02-09T16:35:54+0100"
+        }
+    ],
+    "column_metadata": {
+        "TimeStamp": [
+            {
+                "id": "1711837006",
+                "key": "KBC.datatype.type",
+                "value": "VARCHAR",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:54+0100"
+            },
+            {
+                "id": "1711837007",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:54+0100"
+            },
+            {
+                "id": "1711837008",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837009",
+                "key": "KBC.datatype.length",
+                "value": "16777216",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            }
+        ],
+        "RowCount": [
+            {
+                "id": "1711837010",
+                "key": "KBC.datatype.type",
+                "value": "VARCHAR",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837011",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837012",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837013",
+                "key": "KBC.datatype.length",
+                "value": "16777216",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            }
+        ],
+        "ROW_3": [
+            {
+                "id": "1711837014",
+                "key": "KBC.datatype.type",
+                "value": "VARCHAR",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837015",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837016",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837017",
+                "key": "KBC.datatype.length",
+                "value": "16777216",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            }
+        ],
+        "ROW_4": [
+            {
+                "id": "1711837018",
+                "key": "KBC.datatype.type",
+                "value": "VARCHAR",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837019",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837020",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837021",
+                "key": "KBC.datatype.length",
+                "value": "16777216",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            }
+        ],
+        "ROW_5": [
+            {
+                "id": "1711837022",
+                "key": "KBC.datatype.type",
+                "value": "VARCHAR",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837023",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837024",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837025",
+                "key": "KBC.datatype.length",
+                "value": "16777216",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            }
+        ],
+        "ROW_6": [
+            {
+                "id": "1711837026",
+                "key": "KBC.datatype.type",
+                "value": "VARCHAR",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837027",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837028",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837029",
+                "key": "KBC.datatype.length",
+                "value": "16777216",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            }
+        ],
+        "ROW_7": [
+            {
+                "id": "1711837030",
+                "key": "KBC.datatype.type",
+                "value": "VARCHAR",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837031",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837032",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837033",
+                "key": "KBC.datatype.length",
+                "value": "16777216",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1712318535",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "user",
+                "timestamp": "2023-03-16T19:31:43+0100"
+            },
+            {
+                "id": "1712318537",
+                "key": "KBC.datatype.nullable",
+                "value": "true",
+                "provider": "user",
+                "timestamp": "2023-03-16T19:29:06+0100"
+            },
+            {
+                "id": "1712318538",
+                "key": "provider",
+                "value": "user",
+                "provider": "user",
+                "timestamp": "2023-03-16T19:30:15+0100"
+            },
+            {
+                "id": "1712318549",
+                "key": "KBC.datatype.length",
+                "value": "255",
+                "provider": "user",
+                "timestamp": "2023-03-16T19:31:43+0100"
+            }
+        ],
+        "ROW_8": [
+            {
+                "id": "1711837034",
+                "key": "KBC.datatype.type",
+                "value": "VARCHAR",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837035",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837036",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837037",
+                "key": "KBC.datatype.length",
+                "value": "16777216",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1712318532",
+                "key": "KBC.datatype.basetype",
+                "value": "STRING",
+                "provider": "user",
+                "timestamp": "2023-03-16T19:29:00+0100"
+            },
+            {
+                "id": "1712318533",
+                "key": "KBC.datatype.length",
+                "value": "255,0",
+                "provider": "user",
+                "timestamp": "2023-03-16T19:30:20+0100"
+            },
+            {
+                "id": "1712318534",
+                "key": "KBC.datatype.nullable",
+                "value": "true",
+                "provider": "user",
+                "timestamp": "2023-03-16T19:29:00+0100"
+            },
+            {
+                "id": "1712318539",
+                "key": "provider",
+                "value": "user",
+                "provider": "user",
+                "timestamp": "2023-03-16T19:30:20+0100"
+            }
+        ],
+        "OBCol": [
+            {
+                "id": "1711837038",
+                "key": "KBC.datatype.type",
+                "value": "NUMBER",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837039",
+                "key": "KBC.datatype.nullable",
+                "value": "1",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837040",
+                "key": "KBC.datatype.basetype",
+                "value": "NUMERIC",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            },
+            {
+                "id": "1711837041",
+                "key": "KBC.datatype.length",
+                "value": "1,0",
+                "provider": "keboola.snowflake-transformation",
+                "timestamp": "2023-02-09T16:35:55+0100"
+            }
+        ]
+    }
+}
