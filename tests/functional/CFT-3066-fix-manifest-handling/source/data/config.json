@@ -1,0 +1,13 @@
+{
+    "parameters": {
+        "pattern": ".csv",
+        "replacement": ".dat",
+        "mode": "both",
+        "debug": true
+    },
+    "image_parameters": {},
+    "action": "run",
+    "shared_code_row_ids": [],
+    "storage": {},
+    "authorization": {}
+}
