@@ -89,7 +89,6 @@ class Component(ComponentBase):
                 # This is less destructive than recreating whole TableDefinition
                 in_file._name = out_file.name
                 in_file.full_path = out_file.full_path
-                in_file.stage = "out"
                 self.write_manifest(in_file)
             else:
                 shutil.copy(manifest_path, f'{out_file.full_path}.manifest')
