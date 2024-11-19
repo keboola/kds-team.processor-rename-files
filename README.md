@@ -100,9 +100,10 @@ The easiest way is to match all `#` characters. You can use pattern `#` to do th
 
 **Context replace functions**
 
+**Example 3:**
+
 Using a contexts functions add date and time to file name. 
 The following configration will add date and time to the file name.
-Result will be `/data/in/files/salesreport-&CZ.csv` => `/data/out/files/salesreport_20220101_120000_CZ.csv`.
 Example configuration:
 
 ```json
@@ -116,6 +117,26 @@ Example configuration:
     }
 }
 ```
+Result will be `/data/in/files/salesreport-&CZ.csv` => `/data/out/files/salesreport_20220101_120000_CZ.csv`.
+
+**Example 4:**
+
+Be aware that your file name contains more occurrences of the pattern.
+The following configration will add date to the every occurrence.
+Example configuration:
+
+```json
+{
+    "definition": {
+        "component": "kds-team.processor-rename-files"
+    },
+    "parameters": {
+        "pattern": "report",
+        "replacement": "{date}_report"
+    }
+}
+```
+Result will be `/data/in/files/salesreport-report.csv` => `/data/out/files/sales20220101_report_20220101_report.csv`.
 
 ## Using Capture groups
 
