@@ -19,9 +19,8 @@
     }
   },
   "parameters": {
-    "pattern": "report",
-    "replacement": "{0}_report",
-    "add_timestamp": true,
+    "pattern": "^(.+)-&(.+)\\.csv",
+    "replacement": "$0_{date}_{time}_{timestamp}_$1.csv",
     "debug": true
   },
   "image_parameters": {

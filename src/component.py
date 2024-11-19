@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 import re
 import shutil
 from pathlib import Path
@@ -15,7 +16,6 @@ KEY_REPLACEMENT = "replacement"
 KEY_PATTERN = 'pattern'
 KEY_MODE = 'mode'
 KEY_FUNC_TO_UPPERCASE = 'to_uppercase'
-KEY_ADD_TIMESTAMP = 'add_timestamp'
 
 # list of mandatory parameters => if some is missing,
 # component will fail with readable message on initialization.
@@ -106,10 +106,8 @@ class Component(ComponentBase):
 
         replacement_string = params[KEY_REPLACEMENT]
 
-        # add timestamp
-        add_timestamp = params.get(KEY_ADD_TIMESTAMP, False)
-        if add_timestamp:
-            replacement_string = replacement_string.format(self._get_timestamp())
+        # replace context variables
+        replacement_string = self._replace_context_functions(replacement_string)
 
         group_positions = re.findall(r'(\$\d+)', replacement_string)
         if group_positions:
@@ -129,10 +127,17 @@ class Component(ComponentBase):
 
         return new_file_name, has_changed
 
+    def _replace_context_functions(self, replacement_string: str) -> str:
+        if '{' not in replacement_string:
+            return replacement_string
+
+        return replacement_string.format(**self._available_contexts_functions())
+
     @staticmethod
-    def _get_timestamp() -> str:
-        # generate timestamp
-        return datetime.now().strftime('%Y%m%d%H%M%S')
+    def _available_contexts_functions():
+        return {'timestamp': datetime.now().strftime('%Y%m%d%H%M%S'),
+                'date': datetime.now().strftime('%Y%m%d'),
+                'time': datetime.now().strftime('%H%M%S'), }
 
     def _replace_match_groups(self, mask_string: str, mask_match_groups: List[str],
                               filename_match_groups: List[str]) -> str:
