@@ -4,6 +4,7 @@ import re
 import shutil
 from pathlib import Path
 from typing import Tuple, List, Union
+from datetime import datetime
 
 from keboola.component import ComponentBase
 from keboola.component.dao import FileDefinition, TableDefinition
@@ -14,6 +15,7 @@ KEY_REPLACEMENT = "replacement"
 KEY_PATTERN = 'pattern'
 KEY_MODE = 'mode'
 KEY_FUNC_TO_UPPERCASE = 'to_uppercase'
+KEY_ADD_TIMESTAMP = 'add_timestamp'
 
 # list of mandatory parameters => if some is missing,
 # component will fail with readable message on initialization.
@@ -110,6 +112,12 @@ class Component(ComponentBase):
             # replace patterns
             new_file_name = re.sub(params[KEY_PATTERN], replacement_string, file_name)
 
+        # add timestamp
+        add_timestamp = params.get(KEY_ADD_TIMESTAMP, False)
+        if add_timestamp:
+            name, ext = os.path.splitext(new_file_name)
+            new_file_name = f"{name}_{self._get_timestamp()}{ext}"
+
         if not new_file_name:
             has_changed = False
             new_file_name = file_name
@@ -120,6 +128,11 @@ class Component(ComponentBase):
             new_file_name = name.upper() + ext
 
         return new_file_name, has_changed
+
+    @staticmethod
+    def _get_timestamp() -> str:
+        # generate timestamp
+        return  datetime.now().strftime('%Y%m%d%H%M%S')
 
     def _replace_match_groups(self, mask_string: str, mask_match_groups: List[str],
                               filename_match_groups: List[str]) -> str:
