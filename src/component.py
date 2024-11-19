@@ -132,7 +132,7 @@ class Component(ComponentBase):
     @staticmethod
     def _get_timestamp() -> str:
         # generate timestamp
-        return  datetime.now().strftime('%Y%m%d%H%M%S')
+        return datetime.now().strftime('%Y%m%d%H%M%S')
 
     def _replace_match_groups(self, mask_string: str, mask_match_groups: List[str],
                               filename_match_groups: List[str]) -> str:
