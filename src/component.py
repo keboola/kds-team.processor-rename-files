@@ -105,18 +105,18 @@ class Component(ComponentBase):
             return file_name, False
 
         replacement_string = params[KEY_REPLACEMENT]
+
+        # add timestamp
+        add_timestamp = params.get(KEY_ADD_TIMESTAMP, False)
+        if add_timestamp:
+            replacement_string = replacement_string.format(self._get_timestamp())
+
         group_positions = re.findall(r'(\$\d+)', replacement_string)
         if group_positions:
             new_file_name = self._replace_match_groups(replacement_string, group_positions, matches)
         else:
             # replace patterns
             new_file_name = re.sub(params[KEY_PATTERN], replacement_string, file_name)
-
-        # add timestamp
-        add_timestamp = params.get(KEY_ADD_TIMESTAMP, False)
-        if add_timestamp:
-            name, ext = os.path.splitext(new_file_name)
-            new_file_name = f"{name}_{self._get_timestamp()}{ext}"
 
         if not new_file_name:
             has_changed = False
