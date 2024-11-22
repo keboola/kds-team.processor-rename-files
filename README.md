@@ -22,15 +22,32 @@ and moves the result to `/data/out/files` (or `/data/out/tables`).
 
 ## Supported parameters:
 
- - `pattern` --  The regular expression to match. May contain capturing groups that may be used in the replacement
- - `replacement` -- String to replace the matched file names. May contain references to capture groups if present e.g. `$0` (0-based). 
- - `to_uppercase` -- OPTIONAL true/false IF true, the filename of all files that match the pattern are converted to uppercase. (excluding the extension)
- Note that the pattern needs to be JSON-escaped. e.g. `.+\.csv` => `"pattern": ".+\\.csv"` 
- - `mode` -- OPTIONAL defines the file folder that will be renamed. 
-    - `files` - will process everything in `in/files`. 
-    - `tables` - will process everything in `in/tables`. 
-    - `both` - DEFAULT will process everything in `in/tables` and `in/files`. 
- - `ignore_manifest` -- OPTIONAL (default `false`) Do not transfer manifest file if present. 
+---
+
+- **`pattern`**: The regular expression to match file names. May contain capturing groups that can be used in the replacement.
+
+  *Note*: The pattern needs to be JSON-escaped. For example, to match files ending with `.csv`, use `.+\.csv`, which should be JSON-escaped as `"pattern": ".+\\.csv"`.
+
+- **`replacement`**: The string to replace the matched file names. May contain references to capturing groups if present, using `$1`, `$2`, etc. (1-based indexing), where `$0` refers to the entire match.
+
+  - In the `replacement`, you can use functions within braces `{}` to generate dynamic values:
+
+    - `{timestamp}`: Replaced by the current timestamp in the format `yyyyMMddHHmmss`.
+    - `{date}`: Replaced by the current date in the format `yyyyMMdd`.
+    - `{time}`: Replaced by the current time in the format `HHmmss`.
+
+- **`to_uppercase`** *(Optional)*: Set to `true` or `false`. If `true`, the filenames of all files that match the pattern are converted to uppercase (excluding the extension). Default is `false`.
+
+- **`mode`** *(Optional)*: Defines the input folders to process. Default is `both`.
+
+  - `files`: Processes everything in `in/files`.
+  - `tables`: Processes everything in `in/tables`.
+  - `both`: Processes everything in both `in/tables` and `in/files`.
+
+- **`ignore_manifest`** *(Optional)*: Set to `true` or `false`. If `true`, manifest files will not be transferred if present. Default is `false`.
+
+---
+
 
  
 # Usage
@@ -81,7 +98,45 @@ The easiest way is to match all `#` characters. You can use pattern `#` to do th
 }
 ```
 
+**Context replace functions**
 
+**Example 3:**
+
+Using a contexts functions add date and time to file name. 
+The following configration will add date and time to the file name.
+Example configuration:
+
+```json
+{
+    "definition": {
+        "component": "kds-team.processor-rename-files"
+    },
+    "parameters": {
+        "pattern": "^(.+)-&(.+)\\.csv",
+        "replacement": "$0_{date}_{time}_$1.csv"
+    }
+}
+```
+Result will be `/data/in/files/salesreport-&CZ.csv` => `/data/out/files/salesreport_20220101_120000_CZ.csv`.
+
+**Example 4:**
+
+Be aware that your file name contains more occurrences of the pattern.
+The following configration will add date to the every occurrence.
+Example configuration:
+
+```json
+{
+    "definition": {
+        "component": "kds-team.processor-rename-files"
+    },
+    "parameters": {
+        "pattern": "report",
+        "replacement": "{date}_report"
+    }
+}
+```
+Result will be `/data/in/files/salesreport-report.csv` => `/data/out/files/sales20220101_report_20220101_report.csv`.
 
 ## Using Capture groups
 
@@ -114,6 +169,7 @@ Example processor configuration:
     }
 }
 ```
+
 
 ## Additional functions
 

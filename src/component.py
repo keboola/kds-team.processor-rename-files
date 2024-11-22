@@ -4,6 +4,7 @@ import re
 import shutil
 from pathlib import Path
 from typing import Tuple, List, Union
+from datetime import datetime
 
 from keboola.component import ComponentBase
 from keboola.component.dao import FileDefinition, TableDefinition
@@ -103,6 +104,10 @@ class Component(ComponentBase):
             return file_name, False
 
         replacement_string = params[KEY_REPLACEMENT]
+
+        # replace context variables
+        replacement_string = self._replace_context_functions(replacement_string)
+
         group_positions = re.findall(r'(\$\d+)', replacement_string)
         if group_positions:
             new_file_name = self._replace_match_groups(replacement_string, group_positions, matches)
@@ -120,6 +125,18 @@ class Component(ComponentBase):
             new_file_name = name.upper() + ext
 
         return new_file_name, has_changed
+
+    def _replace_context_functions(self, replacement_string: str) -> str:
+        if '{' not in replacement_string:
+            return replacement_string
+
+        return replacement_string.format(**self._available_contexts_functions())
+
+    @staticmethod
+    def _available_contexts_functions():
+        return {'timestamp': datetime.now().strftime('%Y%m%d%H%M%S'),
+                'date': datetime.now().strftime('%Y%m%d'),
+                'time': datetime.now().strftime('%H%M%S'), }
 
     def _replace_match_groups(self, mask_string: str, mask_match_groups: List[str],
                               filename_match_groups: List[str]) -> str:
