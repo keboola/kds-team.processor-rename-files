@@ -4,6 +4,7 @@ import re
 import shutil
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from keboola.component import ComponentBase, UserException
 from keboola.component.dao import FileDefinition, TableDefinition
@@ -12,6 +13,7 @@ KEY_REPLACEMENT = "replacement"
 
 KEY_PATTERN = "pattern"
 KEY_MODE = "mode"
+KEY_TIMEZONE = "timezone"
 KEY_FUNC_TO_UPPERCASE = "to_uppercase"
 
 # list of mandatory parameters => if some is missing,
@@ -120,7 +122,7 @@ class Component(ComponentBase):
 
         add_timestamp = params.get("add_timestamp", False)
         if add_timestamp:
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            timestamp = datetime.now(self._get_timezone()).strftime("%Y%m%d%H%M%S")
             name, ext = os.path.splitext(new_file_name)
             new_file_name = f"{name}_{timestamp}{ext}"
 
@@ -132,12 +134,23 @@ class Component(ComponentBase):
 
         return replacement_string.format(**self._available_contexts_functions())
 
-    @staticmethod
-    def _available_contexts_functions():
+    def _get_timezone(self) -> ZoneInfo | None:
+        tz_name = self.configuration.parameters.get(KEY_TIMEZONE)
+        if not tz_name:
+            return None
+        try:
+            return ZoneInfo(tz_name)
+        except ZoneInfoNotFoundError as exc:
+            raise UserException(
+                f'Invalid timezone "{tz_name}". Use an IANA name such as "Europe/Prague" or "UTC".'
+            ) from exc
+
+    def _available_contexts_functions(self):
+        now = datetime.now(self._get_timezone())
         return {
-            "timestamp": datetime.now().strftime("%Y%m%d%H%M%S"),
-            "date": datetime.now().strftime("%Y%m%d"),
-            "time": datetime.now().strftime("%H%M%S"),
+            "timestamp": now.strftime("%Y%m%d%H%M%S"),
+            "date": now.strftime("%Y%m%d"),
+            "time": now.strftime("%H%M%S"),
         }
 
     def _replace_match_groups(
