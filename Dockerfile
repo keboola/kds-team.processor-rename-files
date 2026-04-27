@@ -1,21 +1,23 @@
-FROM python:3.8.11-slim
-ENV PYTHONIOENCODING utf-8
+FROM python:3.13-slim AS base
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-COPY /src /code/src/
-COPY /tests /code/tests/
-COPY /scripts /code/scripts/
-COPY requirements.txt /code/requirements.txt
-COPY flake8.cfg /code/flake8.cfg
-COPY deploy.sh /code/deploy.sh
-
-# install gcc to be able to build packages - e.g. required by regex, dateparser, also required for pandas
 RUN apt-get update && apt-get install -y build-essential
 
-RUN pip install flake8
-
-RUN pip install -r /code/requirements.txt
-
 WORKDIR /code/
+COPY pyproject.toml uv.lock ./
 
+ENV UV_PROJECT_ENVIRONMENT="/usr/local/"
+RUN uv sync --no-dev --frozen
 
+COPY src/ src/
+COPY scripts/ scripts/
+COPY deploy.sh .
+
+FROM base AS test
+RUN uv sync --all-groups --frozen
+COPY tests/ tests/
+RUN uv run ruff check src/ tests/
+CMD ["uv", "run", "pytest", "tests/", "-v"]
+
+FROM base AS production
 CMD ["python", "-u", "/code/src/component.py"]

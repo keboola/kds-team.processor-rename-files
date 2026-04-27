@@ -1,0 +1,1 @@
+https://github.com/keboola/kds-team.processor-rename-files/blob/master/LICENSE.md

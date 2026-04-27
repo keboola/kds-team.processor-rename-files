@@ -1,0 +1,17 @@
+name: CI
+on:
+  push:
+    branches-ignore:
+      - main
+    tags:
+      - "*"
+
+jobs:
+  ci:
+    uses: keboola/component-ci/.github/workflows/component-pipeline.yml@master
+    with:
+      app_id: "kds-team.processor-rename-files"
+      vendor: "kds-team"
+      test_build_target: "test"
+      docker_build_target: "production"
+    secrets: inherit
