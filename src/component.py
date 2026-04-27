@@ -2,19 +2,17 @@ import logging
 import os
 import re
 import shutil
-from pathlib import Path
-from typing import Tuple, List, Union
 from datetime import datetime
+from pathlib import Path
 
-from keboola.component import ComponentBase
+from keboola.component import ComponentBase, UserException
 from keboola.component.dao import FileDefinition, TableDefinition
-from keboola.component import UserException
 
 KEY_REPLACEMENT = "replacement"
 
-KEY_PATTERN = 'pattern'
-KEY_MODE = 'mode'
-KEY_FUNC_TO_UPPERCASE = 'to_uppercase'
+KEY_PATTERN = "pattern"
+KEY_MODE = "mode"
+KEY_FUNC_TO_UPPERCASE = "to_uppercase"
 
 # list of mandatory parameters => if some is missing,
 # component will fail with readable message on initialization.
@@ -23,23 +21,21 @@ REQUIRED_IMAGE_PARS = []
 
 
 class Component(ComponentBase):
-
     def __init__(self):
-        super().__init__(required_parameters=REQUIRED_PARAMETERS,
-                         required_image_parameters=REQUIRED_IMAGE_PARS)
+        super().__init__(required_parameters=REQUIRED_PARAMETERS, required_image_parameters=REQUIRED_IMAGE_PARS)
 
     def run(self):
-        '''
+        """
         Main execution code
-        '''
+        """
 
-        mode = self.configuration.parameters.get(KEY_MODE, 'both')
-        in_files: List[Union[TableDefinition, FileDefinition]] = []
-        if mode == 'files':
+        mode = self.configuration.parameters.get(KEY_MODE, "both")
+        in_files: list[TableDefinition | FileDefinition] = []
+        if mode == "files":
             in_files = self.get_input_files_definitions(only_latest_files=False)
-        elif mode == 'tables':
+        elif mode == "tables":
             in_files = self.get_input_tables_definitions()
-        elif mode == 'both':
+        elif mode == "both":
             in_files.extend(self.get_input_tables_definitions())
             in_files.extend(self.get_input_files_definitions(only_latest_files=False))
 
@@ -57,10 +53,9 @@ class Component(ComponentBase):
         if len(in_files) > 0 and renamed_files_count == 0:
             logging.warning("No files were renamed. No files matched the pattern.")
 
-        logging.info('Finished. ')
+        logging.info("Finished. ")
 
-    def rename_and_move(self, in_file: Union[FileDefinition, TableDefinition]):
-
+    def rename_and_move(self, in_file: FileDefinition | TableDefinition):
         file_name, has_changed = self.get_new_name(Path(in_file.full_path).name)
         if has_changed:
             logging.info(f'File "{in_file.full_path}" renamed to "{file_name}"')
@@ -70,20 +65,19 @@ class Component(ComponentBase):
         elif isinstance(in_file, TableDefinition):
             new_out_file = self.create_out_table_definition(file_name)
         else:
-            raise ValueError('Invalid file definition object!')
+            raise ValueError("Invalid file definition object!")
 
         self.move_file_to_out(in_file, new_out_file)
         return has_changed
 
-    def move_file_to_out(self, in_file: Union[FileDefinition, TableDefinition],
-                         out_file: Union[FileDefinition, TableDefinition]):
+    def move_file_to_out(self, in_file: FileDefinition | TableDefinition, out_file: FileDefinition | TableDefinition):
         logging.debug(f'Moving file "{in_file.full_path}" to "{out_file.full_path}"')
 
         Path(out_file.full_path).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(in_file.full_path, out_file.full_path)
 
-        manifest_path = Path(f'{in_file.full_path}.manifest')
-        skip_manifest = self.configuration.parameters.get('skip_manifest')
+        manifest_path = Path(f"{in_file.full_path}.manifest")
+        skip_manifest = self.configuration.parameters.get("skip_manifest")
 
         if manifest_path.exists() and not skip_manifest:
             if isinstance(in_file, TableDefinition):
@@ -92,9 +86,9 @@ class Component(ComponentBase):
                 in_file.full_path = out_file.full_path
                 self.write_manifest(in_file)
             else:
-                shutil.copy(manifest_path, f'{out_file.full_path}.manifest')
+                shutil.copy(manifest_path, f"{out_file.full_path}.manifest")
 
-    def get_new_name(self, file_name: str) -> Tuple[str, bool]:
+    def get_new_name(self, file_name: str) -> tuple[str, bool]:
         params = self.configuration.parameters
         has_changed = True
 
@@ -108,7 +102,7 @@ class Component(ComponentBase):
         # replace context variables
         replacement_string = self._replace_context_functions(replacement_string)
 
-        group_positions = re.findall(r'(\$\d+)', replacement_string)
+        group_positions = re.findall(r"(\$\d+)", replacement_string)
         if group_positions:
             new_file_name = self._replace_match_groups(replacement_string, group_positions, matches)
         else:
@@ -127,31 +121,33 @@ class Component(ComponentBase):
         return new_file_name, has_changed
 
     def _replace_context_functions(self, replacement_string: str) -> str:
-        if '{' not in replacement_string:
+        if "{" not in replacement_string:
             return replacement_string
 
         return replacement_string.format(**self._available_contexts_functions())
 
     @staticmethod
     def _available_contexts_functions():
-        return {'timestamp': datetime.now().strftime('%Y%m%d%H%M%S'),
-                'date': datetime.now().strftime('%Y%m%d'),
-                'time': datetime.now().strftime('%H%M%S'), }
+        return {
+            "timestamp": datetime.now().strftime("%Y%m%d%H%M%S"),
+            "date": datetime.now().strftime("%Y%m%d"),
+            "time": datetime.now().strftime("%H%M%S"),
+        }
 
-    def _replace_match_groups(self, mask_string: str, mask_match_groups: List[str],
-                              filename_match_groups: List[str]) -> str:
-
+    def _replace_match_groups(
+        self, mask_string: str, mask_match_groups: list[str], filename_match_groups: list[str]
+    ) -> str:
         # validate if all groups exists
         # look only at first match
         first_match = filename_match_groups[0]
         if isinstance(first_match, tuple):
-            if any([int(group.replace('$', '')) > len(first_match) for group in mask_match_groups]):
+            if any([int(group.replace("$", "")) > len(first_match) for group in mask_match_groups]):
                 # not all groups are present
-                return ''
+                return ""
             for group in mask_match_groups:
-                mask_string = mask_string.replace(group, first_match[int(group.replace('$', ''))])
+                mask_string = mask_string.replace(group, first_match[int(group.replace("$", ""))])
         else:
-            mask_string = mask_string.replace('$0', first_match)
+            mask_string = mask_string.replace("$0", first_match)
 
         return mask_string
 
