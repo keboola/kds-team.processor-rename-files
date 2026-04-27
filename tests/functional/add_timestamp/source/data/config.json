@@ -1,0 +1,18 @@
+{
+  "storage": {
+    "input": {
+      "files": [],
+      "tables": []
+    },
+    "output": {
+      "files": [],
+      "tables": []
+    }
+  },
+  "parameters": {
+    "pattern": ".+\\.csv",
+    "replacement": "$0",
+    "add_timestamp": true,
+    "mode": "files"
+  }
+}

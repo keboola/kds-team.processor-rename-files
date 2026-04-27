@@ -38,6 +38,8 @@ and moves the result to `/data/out/files` (or `/data/out/tables`).
 
 - **`to_uppercase`** *(Optional)*: Set to `true` or `false`. If `true`, the filenames of all files that match the pattern are converted to uppercase (excluding the extension). Default is `false`.
 
+- **`add_timestamp`** *(Optional)*: Set to `true` or `false`. If `true`, a timestamp in the format `yyyyMMddHHmmss` is appended to the filenames of all files that match the pattern (before the extension). Default is `false`.
+
 - **`mode`** *(Optional)*: Defines the input folders to process. Default is `both`.
 
   - `files`: Processes everything in `in/files`.
