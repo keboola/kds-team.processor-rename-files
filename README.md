@@ -36,6 +36,10 @@ and moves the result to `/data/out/files` (or `/data/out/tables`).
     - `{date}`: Replaced by the current date in the format `yyyyMMdd`.
     - `{time}`: Replaced by the current time in the format `HHmmss`.
 
+  - The values above are computed in UTC by default. Use the `timezone` parameter to change that.
+
+- **`timezone`** *(Optional)*: IANA timezone name (e.g. `Europe/Prague`, `America/New_York`, `UTC`) used by `{timestamp}`, `{date}`, `{time}` and the `add_timestamp` option. Defaults to UTC.
+
 - **`to_uppercase`** *(Optional)*: Set to `true` or `false`. If `true`, the filenames of all files that match the pattern are converted to uppercase (excluding the extension). Default is `false`.
 
 - **`add_timestamp`** *(Optional)*: Set to `true` or `false`. If `true`, a timestamp in the format `yyyyMMddHHmmss` is appended to the filenames of all files that match the pattern (before the extension). Default is `false`.
