@@ -1,8 +1,8 @@
 import unittest
 from pathlib import Path
 
-from datadirtest import DataDirTester
 from freezegun import freeze_time
+from keboola.datadirtest import DataDirTester
 
 
 class TestComponent(unittest.TestCase):
