@@ -1,0 +1,25 @@
+[project]
+name = "kds-team-processor-rename-files"
+version = "0.1.0"
+description = "Rename files based on regex pattern"
+readme = "README.md"
+requires-python = "~=3.13.0"
+dependencies = [
+    "keboola-component>=1.6.8",
+    "keboola-utils>=1.1.0",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+extend-select = ["I", "UP"]
+
+[dependency-groups]
+dev = [
+    "freezegun>=1.5.5",
+    "keboola-datadirtest>=2.3.0",
+    "mock>=5.2.0",
+    "ruff==0.9.10",
+]
