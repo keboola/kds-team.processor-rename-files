@@ -118,6 +118,12 @@ class Component(ComponentBase):
             name, ext = os.path.splitext(new_file_name)
             new_file_name = name.upper() + ext
 
+        add_timestamp = params.get("add_timestamp", False)
+        if add_timestamp:
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            name, ext = os.path.splitext(new_file_name)
+            new_file_name = f"{name}_{timestamp}{ext}"
+
         return new_file_name, has_changed
 
     def _replace_context_functions(self, replacement_string: str) -> str:
